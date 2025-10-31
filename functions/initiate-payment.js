@@ -33,7 +33,7 @@ exports.handler = async (event, context) => {
   
   try {
     const requestBody = JSON.parse(event.body);
-    const { phoneNumber, amount = 149, description = 'FARE Account Activation' } = requestBody;
+    const { phoneNumber, amount = 149, description = 'FARE Account Activation', username, email } = requestBody;
     
     console.log('Parsed request:', { phoneNumber, amount, description });
     
@@ -47,6 +47,39 @@ exports.handler = async (event, context) => {
     
     // Generate a unique reference for this payment
     const externalReference = `FARE-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    
+    // Save application data to applications table
+    if (username && email) {
+      try {
+        const ipAddress = event.headers['x-forwarded-for'] || event.headers['client-ip'] || '';
+        const userAgent = event.headers['user-agent'] || '';
+        
+        await supabase
+          .from('applications')
+          .insert({
+            project_name: 'SURVAYREBORN',
+            full_name: username,
+            email: email,
+            phone: phoneNumber,
+            project_data: {
+              accountType: 'premium',
+              activationFee: amount,
+              description: description,
+              registeredAt: new Date().toISOString()
+            },
+            payment_reference: externalReference,
+            payment_status: 'unpaid',
+            payment_amount: amount,
+            ip_address: ipAddress.split(',')[0].trim(),
+            user_agent: userAgent
+          });
+        
+        console.log('Application data saved for:', username);
+      } catch (dbError) {
+        console.error('Failed to save application data:', dbError);
+        // Continue with payment even if save fails
+      }
+    }
     
     // Prepare PesaFlux payload
     const pesafluxPayload = {
