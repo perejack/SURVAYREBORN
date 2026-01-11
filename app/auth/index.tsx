@@ -25,7 +25,7 @@ export default function AuthScreen() {
       }
       router.replace('/(tabs)');
     } catch (err) {
-      setError(err.message);
+      setError(err instanceof Error ? err.message : 'An error occurred');
     }
   };
 
