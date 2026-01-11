@@ -9,6 +9,7 @@ interface UserState {
   isPremium: boolean;
   isAccountActivated: boolean;
   hasAttemptedPremiumSurvey: boolean;
+  lastAttemptedPremiumSurveyId?: string;
   completedSurveys: Array<{
     id: string;
     isPremium: boolean;
@@ -17,6 +18,7 @@ interface UserState {
   // Methods
   setAccountType: (type: AccountType) => void;
   setAccountActivation: (isActivated: boolean) => void;
+  setLastAttemptedPremiumSurvey: (surveyId: string) => void;
   recordSurveyCompletion: (surveyId: string, isPremium: boolean) => void;
   hasCompletedPremiumSurveys: () => boolean;
   hasCompletedOnlyBasicSurveys: () => boolean;
@@ -31,6 +33,7 @@ export const useUserStore = create<UserState>()(
       isPremium: false,
       isAccountActivated: false,
       hasAttemptedPremiumSurvey: false,
+      lastAttemptedPremiumSurveyId: undefined,
       completedSurveys: [],
 
       setAccountType: (type: AccountType) => {
@@ -42,6 +45,13 @@ export const useUserStore = create<UserState>()(
 
       setAccountActivation: (isActivated: boolean) => {
         set({ isAccountActivated: isActivated });
+      },
+
+      setLastAttemptedPremiumSurvey: (surveyId: string) => {
+        set({
+          lastAttemptedPremiumSurveyId: surveyId,
+          hasAttemptedPremiumSurvey: true,
+        });
       },
 
       recordSurveyCompletion: (surveyId: string, isPremium: boolean) => {
