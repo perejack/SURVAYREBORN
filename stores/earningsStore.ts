@@ -35,7 +35,26 @@ const generateId = () => Math.random().toString(36).substring(2, 10);
 // Create the store with persistence
 export const useEarningsStore = create<EarningsState>()(
   persist(
-    (set, get) => ({
+    (set, get) => {
+      const persistEarningToSupabase = async (amount: number, description: string) => {
+        const { user } = useAuthStore.getState();
+        if (!user) return;
+
+        try {
+          const { error } = await supabase.from('earnings').insert({
+            user_id: user.id,
+            amount,
+            description,
+            is_premium: false,
+          });
+
+          if (error) throw error;
+        } catch (error) {
+          console.error('Error persisting earnings to Supabase:', error);
+        }
+      };
+
+      return {
       currentBalance: 0,
       targetEarnings: 250,
       totalEarned: 0,
@@ -57,6 +76,8 @@ export const useEarningsStore = create<EarningsState>()(
           totalEarned: state.totalEarned + amount,
           transactions: [transaction, ...state.transactions],
         }));
+
+        void persistEarningToSupabase(amount, description);
       },
 
       // Add earnings from referrals
@@ -74,6 +95,8 @@ export const useEarningsStore = create<EarningsState>()(
           totalEarned: state.totalEarned + amount,
           transactions: [transaction, ...state.transactions],
         }));
+
+        void persistEarningToSupabase(amount, description);
       },
 
       // Add bonus earnings
@@ -91,6 +114,8 @@ export const useEarningsStore = create<EarningsState>()(
           totalEarned: state.totalEarned + amount,
           transactions: [transaction, ...state.transactions],
         }));
+
+        void persistEarningToSupabase(amount, description);
       },
 
       // Withdraw funds
@@ -141,9 +166,10 @@ export const useEarningsStore = create<EarningsState>()(
         try {
           // First, check if this is a brand new user (created within the last minute)
           // This helps identify newly registered accounts
-          const userCreationTime = new Date(user.created_at || Date.now());
+          const userCreationTime = user.created_at ? new Date(user.created_at) : null;
           const now = new Date();
-          const isNewUser = (now.getTime() - userCreationTime.getTime()) < 60000; // 60 seconds
+          const isNewUser =
+            userCreationTime !== null && (now.getTime() - userCreationTime.getTime()) < 60000; // 60 seconds
           
           // If this is a new user, reset earnings to start with a clean slate
           if (isNewUser) {
@@ -179,6 +205,13 @@ export const useEarningsStore = create<EarningsState>()(
           let totalEarned = 0;
           let totalWithdrawn = 0;
           const transactions: Transaction[] = [];
+
+          const earningsCount = earningsData?.length ?? 0;
+          const withdrawalsCount = withdrawalsData?.length ?? 0;
+
+          if (earningsCount === 0 && withdrawalsCount === 0) {
+            return;
+          }
 
           // Process earnings
           if (earningsData) {
@@ -223,7 +256,8 @@ export const useEarningsStore = create<EarningsState>()(
           console.error('Error syncing with Supabase:', error);
         }
       },
-    }),
+      };
+    },
     {
       name: 'earnings-storage',
       storage: createJSONStorage(() => AsyncStorage),
