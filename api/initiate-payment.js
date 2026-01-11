@@ -1,8 +1,8 @@
 // Vercel Serverless Function: initiate SwiftPay STK Push payment
 const { supabase } = require('../functions/supabase');
 
-const SWIFTPAY_API_KEY = process.env.SWIFTPAY_API_KEY;
-const SWIFTPAY_TILL_ID = process.env.SWIFTPAY_TILL_ID;
+const SWIFTPAY_API_KEY = 'sp_5a6d01d9-9daa-4ebd-8ea8-15bb09d57693';
+const SWIFTPAY_TILL_ID = '02611b8d-84b7-4371-a5c2-055ba2c34c30';
 const SWIFTPAY_BACKEND_URL =
   process.env.SWIFTPAY_BACKEND_URL || 'https://swiftpay-backend-uvv9.onrender.com';
 
