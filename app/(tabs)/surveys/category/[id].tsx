@@ -322,7 +322,7 @@ export default function CategoryScreen() {
         </View>
         <View style={styles.centerContainer}>
           <Text style={styles.noDataText}>This category doesn't exist or has no surveys.</Text>
-          <TouchableOpacity style={styles.backButton} onPress={goBack}>
+          <TouchableOpacity style={styles.backButtonPrimary} onPress={goBack}>
             <Text style={styles.backButtonText}>Go back</Text>
           </TouchableOpacity>
         </View>
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: Layout.spacing.m,
   },
-  backButton: {
+  backButtonPrimary: {
     padding: Layout.spacing.m,
     backgroundColor: Colors.light.primary,
     borderRadius: Layout.borderRadius.medium,
