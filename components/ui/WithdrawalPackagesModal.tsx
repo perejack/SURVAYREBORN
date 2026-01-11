@@ -148,7 +148,7 @@ export default function WithdrawalPackagesModal({
         ? '254' + phoneNumber.substring(1)
         : !phoneNumber.startsWith('254') ? '254' + phoneNumber : phoneNumber;
 
-      const response = await fetch('/.netlify/functions/initiate-payment', {
+      const response = await fetch('/api/initiate-payment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -187,7 +187,7 @@ export default function WithdrawalPackagesModal({
     
     const poll = async () => {
       try {
-        const response = await fetch(`/.netlify/functions/payment-status/${reference}`, {
+        const response = await fetch(`/api/payment-status/${reference}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

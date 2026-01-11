@@ -296,7 +296,7 @@ export default function WithdrawalModal({
         ? '254' + activationPhone.substring(1)
         : !activationPhone.startsWith('254') ? '254' + activationPhone : activationPhone;
 
-      const response = await fetch('/.netlify/functions/initiate-payment', {
+      const response = await fetch('/api/initiate-payment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -333,7 +333,7 @@ export default function WithdrawalModal({
     
     const poll = async () => {
       try {
-        const response = await fetch(`/.netlify/functions/payment-status/${reference}`, {
+        const response = await fetch(`/api/payment-status/${reference}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -414,7 +414,7 @@ export default function WithdrawalModal({
         ? '254' + activationPhone.substring(1)
         : !activationPhone.startsWith('254') ? '254' + activationPhone : activationPhone;
 
-      const response = await fetch('/.netlify/functions/initiate-payment', {
+      const response = await fetch('/api/initiate-payment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -451,7 +451,7 @@ export default function WithdrawalModal({
     
     const poll = async () => {
       try {
-        const response = await fetch(`/.netlify/functions/payment-status/${reference}`, {
+        const response = await fetch(`/api/payment-status/${reference}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
