@@ -379,8 +379,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   verifyButtonDisabled: {
-    backgroundColor: verificationStatus => 
-      verificationStatus === 'success' ? Colors.light.success : Colors.light.subtext,
+    backgroundColor: Colors.light.subtext,
     opacity: 0.8,
   },
   verifyButtonText: {

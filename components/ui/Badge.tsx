@@ -8,6 +8,7 @@ interface BadgeProps {
   color?: string;
   textColor?: string;
   size?: 'small' | 'medium' | 'large';
+  style?: any;
 }
 
 export default function Badge({

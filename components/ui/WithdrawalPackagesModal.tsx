@@ -206,7 +206,7 @@ export default function WithdrawalPackagesModal({
             setIsProcessing(false);
             
             if (updateProfile) {
-              updateProfile({ isWeeklyAccount: false, hasInstantWithdrawal: true });
+              updateProfile({});
             }
             
             return;

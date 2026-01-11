@@ -16,8 +16,8 @@ import * as Haptics from 'expo-haptics';
 interface ModalProps {
   visible: boolean;
   onClose: () => void;
-  title: string;
-  message: string;
+  title?: string;
+  message?: string;
   buttonText?: string;
   type?: 'success' | 'error' | 'warning' | 'info';
   showCloseButton?: boolean;

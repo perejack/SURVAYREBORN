@@ -22,7 +22,22 @@ import Animated, { useSharedValue, useAnimatedStyle, withTiming, withSequence, w
 // Finance Survey - Regular Survey (100 KSH)
 // This is a category-specific implementation to avoid pricing issues
 
-const sampleFinanceQuestions = [
+type QuestionOption = {
+  id: string;
+  text: string;
+};
+
+type Question = {
+  id: string;
+  text: string;
+  type: 'single-choice' | 'multiple-choice';
+  options: QuestionOption[];
+  required: boolean;
+};
+
+type Answers = Record<string, string | string[]>;
+
+const sampleFinanceQuestions: Question[] = [
   {
     id: 'q1',
     text: 'What payment methods do you prefer when shopping online?',
@@ -99,7 +114,7 @@ export default function FinanceSurveyScreen() {
   
   // State variables
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState<Answers>({});
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
@@ -136,18 +151,18 @@ export default function FinanceSurveyScreen() {
   const currentQuestion = sampleFinanceQuestions[currentQuestionIndex];
   
   // Handlers for different question types
-  const handleSingleChoice = (optionId) => {
+  const handleSingleChoice = (optionId: string) => {
     setAnswers({ ...answers, [currentQuestion.id]: optionId });
   };
   
-  const handleMultipleChoice = (optionId) => {
-    const currentSelections = answers[currentQuestion.id] || [];
+  const handleMultipleChoice = (optionId: string) => {
+    const currentSelections = (answers[currentQuestion.id] as string[]) || [];
     
     if (currentSelections.includes(optionId)) {
       // Remove option if already selected
       setAnswers({
         ...answers,
-        [currentQuestion.id]: currentSelections.filter(id => id !== optionId)
+        [currentQuestion.id]: currentSelections.filter((id: string) => id !== optionId)
       });
     } else {
       // Add option if not already selected
@@ -167,7 +182,7 @@ export default function FinanceSurveyScreen() {
     }
     
     if (currentQuestion.type === 'multiple-choice') {
-      return answer.length > 0;
+      return Array.isArray(answer) && answer.length > 0;
     }
     
     return true;
@@ -217,36 +232,36 @@ export default function FinanceSurveyScreen() {
   // Render options based on question type
   const renderOptions = () => {
     if (currentQuestion.type === 'single-choice') {
-      return currentQuestion.options?.map(option => (
+      return currentQuestion.options?.map((option: QuestionOption) => (
         <TouchableOpacity
           key={option.id}
           style={[
             styles.option,
-            answers[currentQuestion.id] === option.id && styles.selectedOption,
+            (answers[currentQuestion.id] as string) === option.id && styles.selectedOption,
           ]}
           onPress={() => handleSingleChoice(option.id)}
           activeOpacity={0.7}
         >
           <View style={[
             styles.optionCheckCircle,
-            answers[currentQuestion.id] === option.id && styles.selectedOptionCheck,
+            (answers[currentQuestion.id] as string) === option.id && styles.selectedOptionCheck,
           ]}>
-            {answers[currentQuestion.id] === option.id && (
+            {(answers[currentQuestion.id] as string) === option.id && (
               <Check size={16} color="#FFF" />
             )}
           </View>
           <Text style={[
             styles.optionText,
-            answers[currentQuestion.id] === option.id && styles.selectedOptionText,
+            (answers[currentQuestion.id] as string) === option.id && styles.selectedOptionText,
           ]}>
             {option.text}
           </Text>
         </TouchableOpacity>
       ));
     } else if (currentQuestion.type === 'multiple-choice') {
-      const selectedOptions = answers[currentQuestion.id] || [];
+      const selectedOptions = (answers[currentQuestion.id] as string[]) || [];
       
-      return currentQuestion.options?.map(option => (
+      return currentQuestion.options?.map((option: QuestionOption) => (
         <TouchableOpacity
           key={option.id}
           style={[
@@ -400,7 +415,7 @@ const styles = StyleSheet.create({
   timerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.light.subtle,
+    backgroundColor: Colors.light.background,
     paddingHorizontal: Layout.spacing.s,
     paddingVertical: Layout.spacing.xs,
     borderRadius: Layout.borderRadius.medium,
@@ -466,7 +481,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.light.border,
     borderRadius: Layout.borderRadius.medium,
-    backgroundColor: Colors.light.cardBackground,
+    backgroundColor: Colors.light.card,
   },
   selectedOption: {
     borderColor: Colors.light.primary,

@@ -55,7 +55,7 @@ function ConfettiPiece({ delay, left }: ConfettiPieceProps) {
       style={[
         styles.confetti,
         { left },
-        { backgroundColor: Colors.light[
+        { backgroundColor: (Colors.light as any)[
           ['primary', 'secondary', 'accent', 'success'][
             Math.floor(Math.random() * 4)
           ]

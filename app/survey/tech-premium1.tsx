@@ -137,9 +137,9 @@ export default function TechPremiumSurvey1Screen() {
     setShowUpgradeModal(false);
   };
   
-  const handleUpgradeClassic = () => {
+  const handleUpgradeElite = () => {
     // In a real app, this would go to a payment screen
-    console.log('User upgrading to Classic package');
+    console.log('User upgrading to Elite package');
     setAccountType('premium');
     setShowUpgradeModal(false);
   };
@@ -282,7 +282,7 @@ export default function TechPremiumSurvey1Screen() {
         visible={showUpgradeModal}
         onClose={() => setShowUpgradeModal(false)}
         onUpgradeLite={handleUpgradeLite}
-        onUpgradeClassic={handleUpgradeClassic}
+        onUpgradeElite={handleUpgradeElite}
         onContinueBasic={handleContinueBasic}
       />
       

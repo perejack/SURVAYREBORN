@@ -11,10 +11,10 @@ interface MembershipCardProps {
 }
 
 export default function MembershipCard({ tier, onPress }: MembershipCardProps) {
-  const membershipColors = {
-    Basic: ['#7380c2', '#6C63FF'],
-    Premium: ['#4ECDC4', '#26A69A'],
-    Elite: ['#F97316', '#F59E0B']
+  const membershipColors: Record<string, readonly [string, string]> = {
+    Basic: ['#7380c2', '#6C63FF'] as const,
+    Premium: ['#4ECDC4', '#26A69A'] as const,
+    Elite: ['#F97316', '#F59E0B'] as const
   };
 
   const tierBenefits = {
@@ -26,7 +26,7 @@ export default function MembershipCard({ tier, onPress }: MembershipCardProps) {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <LinearGradient
-        colors={membershipColors[tier]}
+        colors={membershipColors[tier] || membershipColors.Basic}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={styles.container}

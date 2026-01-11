@@ -16,7 +16,8 @@ import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
 import { X, AlertCircle, CheckCircle } from 'lucide-react-native';
 import { useUserStore } from '@/stores/userStore';
-import type { AccountType } from '@/types';
+
+type AccountType = 'basic' | 'premium';
 
 // Get screen dimensions for responsive sizing
 const { width, height } = Dimensions.get('window');

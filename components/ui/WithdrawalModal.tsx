@@ -470,7 +470,7 @@ export default function WithdrawalModal({
             setWithdrawalStep('success');
             
             if (updateProfile) {
-              updateProfile({ isWeeklyAccount: false, hasInstantWithdrawal: true });
+              updateProfile({});
             }
             
             return;
@@ -1022,6 +1022,12 @@ const styles = StyleSheet.create({
     color: Colors.light.text,
     textAlign: 'center',
     marginBottom: getSpacing(Layout.spacing.s),
+  },
+  activationFeeText: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: getFontSize(18),
+    color: Colors.light.primary,
+    textAlign: 'center',
   },
   activationSubtitle: {
     fontFamily: 'Poppins-Regular',
