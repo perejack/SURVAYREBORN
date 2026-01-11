@@ -1,11 +1,18 @@
 import { useState, useRef } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList, Animated } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList, Animated, ViewToken } from 'react-native';
 import { router } from 'expo-router';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
 import { ArrowRight } from 'lucide-react-native';
 
-const onboardingData = [
+type OnboardingItem = {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+};
+
+const onboardingData: OnboardingItem[] = [
   {
     id: '1',
     title: 'Welcome to SurveyPay',
@@ -35,10 +42,10 @@ const onboardingData = [
 export default function OnboardingScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
-  const slidesRef = useRef(null);
+  const slidesRef = useRef<FlatList<OnboardingItem> | null>(null);
 
-  const viewableItemsChanged = useRef(({ viewableItems }) => {
-    setCurrentIndex(viewableItems[0]?.index || 0);
+  const viewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    setCurrentIndex(viewableItems[0]?.index ?? 0);
   }).current;
 
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
@@ -63,7 +70,7 @@ export default function OnboardingScreen() {
       
       <FlatList
         data={onboardingData}
-        renderItem={({ item }) => (
+        renderItem={({ item }: { item: OnboardingItem }) => (
           <View style={styles.slide}>
             <Image source={{ uri: item.image }} style={styles.image} />
             <View style={styles.textContainer}>
