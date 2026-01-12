@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Linking } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
 import Colors from '@/constants/Colors';
-import { Home, LayoutGrid, BarChart2, User } from 'lucide-react-native';
+import { Home, LayoutGrid, BarChart2, User, MessageCircle } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const { width } = Dimensions.get('window');
@@ -13,6 +13,7 @@ const tabColors = {
   home: '#6C63FF',
   surveys: '#4ECDC4',
   earnings: '#FFB627',
+  talk: '#25D366',
   profile: '#FF6B6B',
 };
 
@@ -70,6 +71,23 @@ export default function CustomTabBar() {
   const goToSurveys = () => router.push('/surveys');
   const goToEarnings = () => router.push('/earnings');
   const goToProfile = () => router.push('/profile');
+
+  const openTalkToUs = async () => {
+    const phone = '254105575260';
+    const appUrl = `whatsapp://send?phone=${phone}`;
+    const webUrl = `https://wa.me/${phone}`;
+
+    try {
+      const canOpen = await Linking.canOpenURL(appUrl);
+      await Linking.openURL(canOpen ? appUrl : webUrl);
+    } catch {
+      try {
+        await Linking.openURL(webUrl);
+      } catch {
+        // ignore
+      }
+    }
+  };
   
   return (
     <View style={styles.container}>
@@ -96,6 +114,14 @@ export default function CustomTabBar() {
           isActive={isEarningsActive}
           onPress={goToEarnings}
           color={tabColors.earnings}
+        />
+
+        <TabItem
+          icon={<MessageCircle size={24} color={tabColors.talk} />}
+          label="Talk"
+          isActive={false}
+          onPress={openTalkToUs}
+          color={tabColors.talk}
         />
         
         <TabItem
