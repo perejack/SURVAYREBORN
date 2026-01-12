@@ -116,21 +116,25 @@ export default function CustomTabBar() {
           color={tabColors.earnings}
         />
 
-        <TabItem
-          icon={<MessageCircle size={24} color={tabColors.talk} />}
-          label="Talk"
-          isActive={false}
-          onPress={openTalkToUs}
-          color={tabColors.talk}
-        />
-        
-        <TabItem
-          icon={<User size={24} color={tabColors.profile} />}
-          label="Profile"
-          isActive={isProfileActive}
-          onPress={goToProfile}
-          color={tabColors.profile}
-        />
+        <View style={styles.profileGroup}>
+          <TabItem
+            icon={<User size={24} color={tabColors.profile} />}
+            label="Profile"
+            isActive={isProfileActive}
+            onPress={goToProfile}
+            color={tabColors.profile}
+          />
+
+          <TouchableOpacity
+            style={styles.talkButton}
+            onPress={openTalkToUs}
+            activeOpacity={0.8}
+          >
+            <View style={styles.talkButtonInner}>
+              <MessageCircle size={18} color="#FFFFFF" />
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -156,6 +160,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: '100%',
     width: '100%',
+  },
+  profileGroup: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  talkButton: {
+    width: 46,
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  talkButtonInner: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: tabColors.talk,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   tabItem: {
     flex: 1,

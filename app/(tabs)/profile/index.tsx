@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Alert, ActivityIndicator, Modal } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native';
 import Colors from '@/constants/Colors';
 import Layout from '@/constants/Layout';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
-import { CircleUser as UserCircle, CreditCard, Award, Settings, LogOut, Gift, Trophy, CircleHelp as HelpCircle, Info, ChevronRight, Globe, MessageCircle } from 'lucide-react-native';
+import { CircleUser as UserCircle, CreditCard, Award, Settings, LogOut, Gift, Trophy, CircleHelp as HelpCircle, Info, ChevronRight, Globe } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '@/stores/authStore';
 import { useUserStore } from '@/stores/userStore';
@@ -20,9 +20,6 @@ export default function ProfileScreen() {
   // State for coming soon modal
   const [showComingSoonModal, setShowComingSoonModal] = useState(false);
   const [comingSoonFeature, setComingSoonFeature] = useState('');
-  
-  // State for talk to us modal
-  const [showTalkToUsModal, setShowTalkToUsModal] = useState(false);
   
   useEffect(() => {
     if (user) {
@@ -69,10 +66,6 @@ export default function ProfileScreen() {
   const showFeatureComingSoon = (featureName: string) => {
     setComingSoonFeature(featureName);
     setShowComingSoonModal(true);
-  };
-
-  const handleTalkToUs = () => {
-    setShowTalkToUsModal(true);
   };
 
   const handleLogout = async () => {
@@ -278,21 +271,6 @@ export default function ProfileScreen() {
                 <ChevronRight size={18} color={Colors.light.subtext} />
               </View>
             </TouchableOpacity>
-            
-            <View style={styles.menuDivider} />
-            
-            <TouchableOpacity 
-              style={styles.menuItem}
-              onPress={handleTalkToUs}
-            >
-              <View style={styles.menuItemLeft}>
-                <View style={[styles.menuIconContainer, { backgroundColor: Colors.light.accent + '20' }]}>
-                  <MessageCircle size={18} color={Colors.light.accent} />
-                </View>
-                <Text style={styles.menuItemText}>Talk to us</Text>
-              </View>
-              <ChevronRight size={18} color={Colors.light.subtext} />
-            </TouchableOpacity>
           </Card>
         </View>
         
@@ -306,64 +284,6 @@ export default function ProfileScreen() {
         
         <Text style={styles.versionText}>Version 1.0.0</Text>
       </ScrollView>
-      
-      {/* Floating Talk to Us Button */}
-      <TouchableOpacity
-        style={styles.talkToUsButton}
-        onPress={handleTalkToUs}
-        activeOpacity={0.8}
-      >
-        <MessageCircle size={24} color="#FFF" />
-        <Text style={styles.talkToUsText}>Talk to us</Text>
-      </TouchableOpacity>
-      
-      {/* Talk to Us Modal */}
-      <Modal
-        visible={showTalkToUsModal}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setShowTalkToUsModal(false)}
-      >
-        <TouchableOpacity
-          style={styles.modalOverlay}
-          activeOpacity={1}
-          onPress={() => setShowTalkToUsModal(false)}
-        >
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <MessageCircle size={32} color={Colors.light.primary} />
-              <Text style={styles.modalTitle}>Talk to us</Text>
-            </View>
-            <Text style={styles.modalText}>
-              We'd love to hear from you! Reach out to us through any of these channels:
-            </Text>
-            <TouchableOpacity style={styles.contactOption}>
-              <View style={styles.contactIconContainer}>
-                <MessageCircle size={20} color={Colors.light.primary} />
-              </View>
-              <View style={styles.contactInfo}>
-                <Text style={styles.contactLabel}>WhatsApp</Text>
-                <Text style={styles.contactValue}>+254105575260</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.contactOption}>
-              <View style={styles.contactIconContainer}>
-                <MessageCircle size={20} color={Colors.light.primary} />
-              </View>
-              <View style={styles.contactInfo}>
-                <Text style={styles.contactLabel}>Email</Text>
-                <Text style={styles.contactValue}>support@surveyspay.online</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setShowTalkToUsModal(false)}
-            >
-              <Text style={styles.closeButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </TouchableOpacity>
-      </Modal>
       
       {/* Coming Soon Modal */}
       <ComingSoonModal
@@ -568,103 +488,5 @@ const styles = StyleSheet.create({
     color: Colors.light.subtext,
     textAlign: 'center',
     marginVertical: Layout.spacing.m,
-  },
-  talkToUsButton: {
-    position: 'absolute',
-    bottom: 140,
-    right: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.light.primary,
-    paddingHorizontal: 20,
-    paddingVertical: 14,
-    borderRadius: 35,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-    elevation: 12,
-    zIndex: 9999,
-  },
-  talkToUsText: {
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 15,
-    color: '#FFF',
-    marginLeft: 10,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: Layout.spacing.xl,
-  },
-  modalContent: {
-    backgroundColor: Colors.light.card,
-    borderRadius: Layout.borderRadius.large,
-    padding: Layout.spacing.xl,
-    width: '100%',
-    maxWidth: 350,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: Layout.spacing.m,
-  },
-  modalTitle: {
-    fontFamily: 'Poppins-Bold',
-    fontSize: 20,
-    color: Colors.light.text,
-    marginLeft: Layout.spacing.m,
-  },
-  modalText: {
-    fontFamily: 'Poppins-Regular',
-    fontSize: 14,
-    color: Colors.light.subtext,
-    marginBottom: Layout.spacing.m,
-    lineHeight: 20,
-  },
-  contactOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.light.background,
-    padding: Layout.spacing.m,
-    borderRadius: Layout.borderRadius.medium,
-    marginBottom: Layout.spacing.s,
-  },
-  contactIconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Colors.light.primary + '15',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: Layout.spacing.m,
-  },
-  contactInfo: {
-    flex: 1,
-  },
-  contactLabel: {
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 14,
-    color: Colors.light.text,
-    marginBottom: 2,
-  },
-  contactValue: {
-    fontFamily: 'Poppins-Regular',
-    fontSize: 13,
-    color: Colors.light.subtext,
-  },
-  closeButton: {
-    backgroundColor: Colors.light.primary,
-    paddingVertical: Layout.spacing.m,
-    borderRadius: Layout.borderRadius.medium,
-    alignItems: 'center',
-    marginTop: Layout.spacing.m,
-  },
-  closeButtonText: {
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 16,
-    color: '#FFF',
   },
 });
