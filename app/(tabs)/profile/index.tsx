@@ -278,6 +278,21 @@ export default function ProfileScreen() {
                 <ChevronRight size={18} color={Colors.light.subtext} />
               </View>
             </TouchableOpacity>
+            
+            <View style={styles.menuDivider} />
+            
+            <TouchableOpacity 
+              style={styles.menuItem}
+              onPress={handleTalkToUs}
+            >
+              <View style={styles.menuItemLeft}>
+                <View style={[styles.menuIconContainer, { backgroundColor: Colors.light.accent + '20' }]}>
+                  <MessageCircle size={18} color={Colors.light.accent} />
+                </View>
+                <Text style={styles.menuItemText}>Talk to us</Text>
+              </View>
+              <ChevronRight size={18} color={Colors.light.subtext} />
+            </TouchableOpacity>
           </Card>
         </View>
         
