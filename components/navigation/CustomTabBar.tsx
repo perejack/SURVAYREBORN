@@ -133,6 +133,7 @@ export default function CustomTabBar() {
             <View style={styles.talkButtonInner}>
               <MessageCircle size={18} color="#FFFFFF" />
             </View>
+            <Text style={styles.talkButtonText}>Talk to us</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -179,6 +180,12 @@ const styles = StyleSheet.create({
     backgroundColor: tabColors.talk,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  talkButtonText: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 10,
+    color: Colors.light.subtext,
+    marginTop: 4,
   },
   tabItem: {
     flex: 1,
